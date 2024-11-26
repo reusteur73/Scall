@@ -1,0 +1,8 @@
+{
+  "name": "Scall",
+  "description": "Scall mining module",
+  "author": "ReuS_V2",
+  "version": "3.0.0",
+  "entry": "index.js",
+  "requires": ["CTAutocomplete", "Vigilance","axios", "PogData", "Elementa", "requestV2", "BloomCore"]
+}
