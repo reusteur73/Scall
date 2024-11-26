@@ -205,7 +205,7 @@ export function drawInnerEspBox(x, y, z, w, h, red, green, blue, alpha, phase)
     Tessellator.popMatrix();
 };
 
-// stolen from soopy
+// stolen from soopy then from Coleweight
 /**
  * Renders a waypoint with some settings.
  * @param {number} x
