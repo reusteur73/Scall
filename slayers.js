@@ -13,25 +13,9 @@ let slayersList = [
     {"entityName": "☠ Inferno Demonlord", "uuid": null,"raison": "Demonlord","euuid": null, created: null}
 ];
 
-let waypoints = [];
-let slayerHud = {
-    x: 0,
-    y: 0,
-    text: "",
-    visible: false,
-    sessionExpGain: 0,
-    sessionKills: 0,
-    currentGain: 0,
-    gainPerHour: 0,
-    nextLvlEta: 0,
-    wholeLvlExp: null,
-    nextLvlExpReq: 0,
-    bossTimes: [],
-    lastTimeBoss: null,
-    lastUpdateTime: null,
-    sessionStartTime: null,
-    slayerType: null
-};
+let slayerHud, waypoints = [];
+resetSlayerHud();
+
 let GAINS = {
     "Zombie": {
         rewards: [0,5,25,100,500,500,500,1500],
@@ -130,7 +114,8 @@ function resetSlayerHud() {
         lastTimeBoss: null,
         lastUpdateTime: null,
         sessionStartTime: null,
-        slayerType: null
+        slayerType: null,
+        resetNext: false
     };
 }
 
@@ -240,20 +225,21 @@ register("chat", (slayerType, level, neededExp, event) => {
             }
             let _ETA
             if (slayerHud.sessionKills < 3) _ETA = `&cNeed more data (${3 - (slayerHud.sessionKills + 1) + 1 })`;
-            else if (slayerHud.sessionKills >= 3){
-                _ETA = secondsToMessage(Math.round(_neededExp / slayerHud.gainPerHour * 3600));
-            }
+            else if (slayerHud.sessionKills >= 3) _ETA = secondsToMessage(Math.round(_neededExp / slayerHud.gainPerHour * 3600));
             slayerHud.sessionKills++;
             slayerHud.slayerType = slayerType;
             slayerHud.lastUpdateTime = Date.now();
             let elapsedTime = (Date.now() - slayerHud.sessionStartTime) / 1000;
             let expPerHour = slayerHud.sessionExpGain / elapsedTime * 3600;
-            if (slayerHud.sessionKills >= 2){
-                _xpHourText = `&r&7EXP/h: &r&d${addCommas(Math.round(expPerHour))}`;
-            }
+            if (slayerHud.sessionKills >= 2) _xpHourText = `&r&7EXP/h: &r&d${addCommas(Math.round(expPerHour))}`;
             slayerHud.gainPerHour = expPerHour;
             slayerHud.nextLvlEta = Math.round(_neededExp / expPerHour * 3600);
             let currrentBossXp = slayerHud.wholeLvlExp - _neededExp;
+            if (slayerHud.sessionKills > 2 && !slayerHud.resetNext && killUntilLvl === 1) slayerHud.resetNext = true;
+            if (slayerHud.resetNext &&  slayerHud.sessionKills > 2) {
+                resetSlayerHud();
+                ChatLib.chat("&r&7[&r&b&lSCALL&r&7] &r&cSeems like you are done with this level, resetting the HUD.");
+            }
             slayerHud.text = `&r      &4&l☠ &2&l${slayerType} Slayer LVL ${_level}&r
 ${_xpText}
 ${_xpHourText}
