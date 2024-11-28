@@ -113,6 +113,27 @@ function sendMessageOnSlayerSpawn() {
     }
 }
 
+function resetSlayerHud() {
+    slayerHud = {
+        x: 0,
+        y: 0,
+        text: "",
+        visible: false,
+        sessionExpGain: 0,
+        sessionKills: 0,
+        currentGain: 0,
+        gainPerHour: 0,
+        nextLvlEta: 0,
+        wholeLvlExp: null,
+        nextLvlExpReq: 0,
+        bossTimes: [],
+        lastTimeBoss: null,
+        lastUpdateTime: null,
+        sessionStartTime: null,
+        slayerType: null
+    };
+}
+
 function removeWaypoint(x, y, z) {
     waypoints = waypoints.filter(waypoint => waypoint.x !== x || waypoint.y !== y || waypoint.z !== z);
 }
@@ -164,6 +185,9 @@ register('step', () => {
         });
 
     });
+    if (slayerHud.visible && Date.now() - slayerHud.lastUpdateTime > 300000) {
+        resetSlayerHud();
+    }
 }).setFps(3);
 
 register("renderOverlay", () => {
@@ -184,15 +208,9 @@ register("renderOverlay", () => {
 register("chat", (slayerType, level, neededExp, event) => {
     if (Settings.slayerHud) {
         try {
-            let _level = stringToNumber(level); 
+            let Avg = null, Best = null, killUntilLvlText = "", killUntilLvl = null, _xpText, _level = stringToNumber(level), _neededExp = stringToNumber(neededExp);
             if (!slayerHud.visible) slayerHud.visible = true;
             if (slayerHud.sessionStartTime === null) slayerHud.sessionStartTime = Date.now();
-            let _neededExp = stringToNumber(neededExp);
-            let _xpText
-            let killUntilLvl = null
-            let killUntilLvlText = "";
-            let Avg = null
-            let Best = null
             if (slayerHud.nextLvlExpReq === 0) slayerHud.nextLvlExpReq = _neededExp;
             if (slayerHud.wholeLvlExp === null) slayerHud.wholeLvlExp = GAINS[slayerType].needed[_level+1];
             if (slayerHud.sessionKills === 1) {
@@ -250,27 +268,4 @@ ${_xpHourText}
             console.error("[SCALL] ", e);
         }
     }
-}).setCriteria(/&r   &r&e(.*) Slayer LVL ([1-7]) &r&5- &r&7Next LVL in &r&d(\S*) XP&r&7!&r/g);
-
-register("worldUnload", () => {
-    slayerHud = {
-        x: 0,
-        y: 0,
-        text: "",
-        visible: false,
-        sessionExpGain: 0,
-        sessionKills: 0,
-        currentGain: 0,
-        gainPerHour: 0,
-        nextLvlEta: 0,
-        wholeLvlExp: null,
-        nextLvlExpReq: 0,
-        lastUpdateTime: null,
-        sessionStartTime: null,
-        slayerType: null
-    };
-    slayersList.forEach(slayer => {
-        slayer.spawned = false;
-    });
-    waypoints = [];
-})
+}).setCriteria(/&r   &r&e(.*) Slayer LVL ([1-9]) &r&5- &r&7Next LVL in &r&d(\S*) XP&r&7!&r/g);
