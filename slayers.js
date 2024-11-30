@@ -66,7 +66,6 @@ function sendMessageOnSlayerSpawn() {
         });
     } catch (e) {
         console.error(e);
-        ChatLib.chat(`[SCALL] Failed to send the message on Slayer spawn.` + e);
     }
 }
 
@@ -153,7 +152,6 @@ register("renderOverlay", () => {
 register("chat", (slayerType, level, neededExp, event) => {
     if (Settings.slayerHud) {
         try {
-            console.log(slayerType, level, neededExp);
             let Avg = null, Best = null, killUntilLvlText = "", killUntilLvl = null, _xpText, _level = stringToNumber(level), _neededExp = stringToNumber(neededExp);
             if (!slayerHud.visible) slayerHud.visible = true;
             if (slayerHud.sessionStartTime === null) slayerHud.sessionStartTime = Date.now();
