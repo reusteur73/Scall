@@ -5,12 +5,12 @@ import renderBeaconBeam from "../BeaconBeam"
 
 register('step', () => sendMessageOnSlayerSpawn()).setFps(3);
 let slayersList = [
-    {"entityName": "☠ Revenant Horror", "uuid": null,"raison": "RevenantHorror","euuid": null, created: null, needed: [0,5,15,200,1000,5000,20000,100000,400000,1000000]},
-    {"entityName": "☠ Tarantula Broodfather", "uuid": null, "raison": "Broodfather","euuid": null, created: null, needed: [0,5,25,200,1000,5000,20000,100000,400000,1000000]},
-    {"entityName": "☠ Sven Packmaster", "uuid": null, "raison": "Packmaster","euuid": null, created: null, needed: [0,10,30,250,1500,5000,20000,100000,400000,1000000]},
-    {"entityName": "☠ Voidgloom Seraph", "uuid": null,"raison": "VoidgloomSeraph","euuid": null, created: null, needed: [0,10,30,250,1500,5000,20000,100000,400000,1000000]},
-    {"entityName": "☠ Riftstalker Bloodfiend", "uuid": null,"raison": "RiftstalkerBloodfiend","euuid": null, created: null, needed: [0,10,30,250,1500,5000,20000,100000,400000,1000000]},
-    {"entityName": "☠ Inferno Demonlord", "uuid": null,"raison": "Demonlord","euuid": null, created: null, needed: [0,20,75,240,840,2400]}
+    {"entityName": "☠ Revenant Horror", "uuid": null,"raison": "RevenantHorror","euuid": null, created: null, needed: [0,5,15,200,1000,5000,20000,100000,400000,1000000], trigger: "Zombie"},
+    {"entityName": "☠ Tarantula Broodfather", "uuid": null, "raison": "Broodfather","euuid": null, created: null, needed: [0,5,25,200,1000,5000,20000,100000,400000,1000000], trigger: "Spider"},
+    {"entityName": "☠ Sven Packmaster", "uuid": null, "raison": "Packmaster","euuid": null, created: null, needed: [0,10,30,250,1500,5000,20000,100000,400000,1000000], trigger: "Wolf"},
+    {"entityName": "☠ Voidgloom Seraph", "uuid": null,"raison": "VoidgloomSeraph","euuid": null, created: null, needed: [0,10,30,250,1500,5000,20000,100000,400000,1000000], trigger: "Enderman"},
+    {"entityName": "☠ Riftstalker Bloodfiend", "uuid": null,"raison": "RiftstalkerBloodfiend","euuid": null, created: null, needed: [0,10,30,250,1500,5000,20000,100000,400000,1000000], trigger: "Vampire"},
+    {"entityName": "☠ Inferno Demonlord", "uuid": null,"raison": "Demonlord","euuid": null, created: null, needed: [0,20,75,240,840,2400], trigger: "Blaze"},
 ];
 
 let slayerHud, waypoints = [];
@@ -171,7 +171,7 @@ register("chat", (slayerType, level, neededExp, event) => {
             if (!slayerHud.visible) slayerHud.visible = true;
             if (slayerHud.sessionStartTime === null) slayerHud.sessionStartTime = Date.now();
             if (slayerHud.nextLvlExpReq === 0) slayerHud.nextLvlExpReq = _neededExp;
-            if (slayerHud.wholeLvlExp === null) slayerHud.wholeLvlExp = slayersList.find(slayer => slayer.raison === slayerType).needed[_level];
+            if (slayerHud.wholeLvlExp === null) slayerHud.wholeLvlExp = slayersList.find(slayer => slayer.trigger === slayerType).needed[_level+1];
             if (slayerHud.sessionKills === 1) {
                 slayerHud.currentGain = slayerHud.nextLvlExpReq - _neededExp;
                 slayerHud.sessionExpGain += slayerHud.currentGain * 2;
