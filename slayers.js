@@ -87,8 +87,7 @@ function resetSlayerHud() {
         lastTimeBoss: null,
         lastUpdateTime: null,
         sessionStartTime: null,
-        slayerType: null,
-        resetNext: false
+        slayerType: null
     };
 }
 
@@ -209,11 +208,6 @@ register("chat", (slayerType, level, neededExp, event) => {
             slayerHud.gainPerHour = expPerHour;
             slayerHud.nextLvlEta = Math.round(_neededExp / expPerHour * 3600);
             let currrentBossXp = slayerHud.wholeLvlExp - _neededExp;
-            if (slayerHud.sessionKills > 2 && !slayerHud.resetNext && killUntilLvl === 1) slayerHud.resetNext = true;
-            if (slayerHud.resetNext &&  slayerHud.sessionKills > 2) {
-                resetSlayerHud();
-                ChatLib.chat("&r&7[&r&b&lSCALL&r&7] &r&cSeems like you are done with this level, resetting the HUD.");
-            }
             slayerHud.text = `&r      &4&l☠ &2&l${slayerType} Slayer LVL ${_level}&r
 ${_xpText}
 ${_xpHourText}
@@ -229,3 +223,14 @@ ${_xpHourText}
         }
     }
 }).setCriteria(/&r   &r&e(.*) Slayer LVL ([1-9]) &r&5- &r&7Next LVL in &r&d(\S*) XP&r&7!&r/g);
+
+register("chat", (slayerTrigger, level, event) => {
+    if (Settings.slayerHud && slayerHud.visible && slayerHud.slayerType === slayerTrigger) {
+        resetSlayerHud();
+        if (stringToNumber(level) < 9) {
+            ChatLib.chat("&a&l[&b&lSCALL&a&l]&r &2Looks like you've leveled up GG! Slayer HUD has been reset. &a&lGood luck on your next level!");
+        } else if (stringToNumber(level) === 9) {
+            ChatLib.chat("&a&l[&b&lSCALL&a&l]&r &2Looks like you've reached the max level! Slayer HUD has been reset. &a&lGood luck on your next grind!"); // just for fun
+        }
+    }
+}).setCriteria(/&r  &r&a&lLVL UP! &r&5➜ &r&e([A-Z][a-z]*) Slayer LVL ([1-9])!&r/g);
