@@ -5,6 +5,7 @@ import { Title, getKey } from "./functions";
 import "./powdersTrackers"
 import "./hoppity"
 import "./slayers"
+import "./moneyTrackers/index"
 
 const prefix = '&a&l[&b&lSCALL&a&l]&r';
 

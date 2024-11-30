@@ -285,6 +285,65 @@ class Settings {
     })
     displayOwnWaypoints = false;
 
+    // Money Trackers
+    @SwitchProperty({
+        name: "Money Trackers",
+        description: "Enable money trackers",
+        category: "Money Trackers",
+        subcategory: "1 - General"
+    })
+    moneyTracker = true;
+
+    @SwitchProperty({
+        name: "Enable Gemstone Coin Tracker",
+        description: "Enable Gemstone Coin Tracker",
+        category: "Money Trackers",
+        subcategory: "2 - Gemstone"
+    })
+    gemstoneTracker = true;
+
+    @ButtonProperty({
+        name: "Move Gemstone Coin Tracker HUD",
+        description: "Set the position of the Gemstone Coin Tracker HUD",
+        category: "Money Trackers",
+        subcategory: "2 - Gemstone",
+        placeholder: "Move"
+    })
+    moveGemstoneCoinTrackerHUD() {
+        const GemstoneGuiData = new PogObject("Scall", {
+            GemstoneCoinTracker: {
+                x: 0,
+                y: 0,
+                scale: 1
+            }
+        })
+        const editGui = new ScalableGui(GemstoneGuiData, GemstoneGuiData.GemstoneCoinTracker)
+        editGui.onRender(() => {
+            const myString = `Gemstone Coin: 1,000,000\nTotal Gains: 100,000\nGains per Minute: 5,000`;
+            Renderer.translate(editGui.getX(), editGui.getY())
+            Renderer.scale(editGui.getScale())
+            Renderer.drawString(myString, 0, 0)
+        })
+        editGui.open()
+    }
+
+    @SwitchProperty({
+        name: "Gemstone NPC Price",
+        description: "Use NPC price for gemstones",
+        category: "Money Trackers",
+        subcategory: "2 - Gemstone"
+    })
+    gemstoneNpcPrice = false;
+
+    @SelectorProperty({
+        name: "Gemstone Selling Method",
+        description: "Choose the method of selling gemstones",
+        category: "Money Trackers",
+        subcategory: "2 - Gemstone",
+        options: ["Flawed", "Fine", "Flawless", "Perfect"]
+    })
+    gemstoneSellingMethod = 2;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription("General", `&a&l[&b&lSCALL&a&l]&r &bv${JSON.parse(FileLib.read("Scall", "metadata.json")).version}` + 

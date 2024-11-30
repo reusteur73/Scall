@@ -214,3 +214,31 @@ export function removeFormatting(text) {
         return text;
     }
 }
+
+export function getSackAddedValue(siblings) {
+    let items = {};
+    let amount = 0;
+    siblings.forEach((line) => {
+        if (line.text.trim() === "" || line.text.includes("Sack)") || line.text.includes("settings")) return;
+        if (line.text.includes("+")) amount = stringToNumber(line.text.split("+")[1].trim());
+        else items[line.text.trim()] = amount;
+    });
+    return items;
+}
+
+export function getBazaarPrice(item) {
+    let bazaar = JSON.parse(FileLib.read("SkyblockAddons", "bazaar.json"));
+    return bazaar[item];
+}
+
+export function formatPercentage(percentage) {
+    let color;
+    if (percentage < 34) {
+        color = "&c";
+    } else if (percentage < 67) {
+        color = "&e"; 
+    } else {
+        color = "&a"; 
+    }
+    return `${color}${percentage}%`;
+}
