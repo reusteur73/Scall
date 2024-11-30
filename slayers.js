@@ -62,33 +62,16 @@ function sendMessageOnSlayerSpawn() {
             slayer.spawned = true;
             const location = `x: ${Math.round(slayerEntity.getX())} | y: ${Math.round(slayerEntity.getY())} | z: ${Math.round(slayerEntity.getZ())}`;
             const message = `${slayer.raison} ${location}`;
-            ChatLib.command('cc ' + message);
+            ChatLib.command('pc ' + message);
         });
     } catch (e) {
         console.error(e);
-        ChatLib.chat(`[Scall] Failed to send the message on Slayer spawn.` + e);
+        ChatLib.chat(`[SCALL] Failed to send the message on Slayer spawn.` + e);
     }
 }
 
 function resetSlayerHud() {
-    slayerHud = {
-        x: 0,
-        y: 0,
-        text: "",
-        visible: false,
-        sessionExpGain: 0,
-        sessionKills: 0,
-        currentGain: 0,
-        gainPerHour: 0,
-        nextLvlEta: 0,
-        wholeLvlExp: null,
-        nextLvlExpReq: 0,
-        bossTimes: [],
-        lastTimeBoss: null,
-        lastUpdateTime: null,
-        sessionStartTime: null,
-        slayerType: null
-    };
+    slayerHud = {x: 0,y: 0,text: "",visible: false,sessionExpGain: 0,sessionKills: 0,currentGain: 0,gainPerHour: 0,nextLvlEta: 0,wholeLvlExp: null,nextLvlExpReq: 0,bossTimes: [],lastTimeBoss: null,lastUpdateTime: null,sessionStartTime: null,slayerType: null};
 }
 
 function removeWaypoint(x, y, z) {
@@ -96,7 +79,12 @@ function removeWaypoint(x, y, z) {
 }
 register("chat", (preMsg, x,y,z,event) => {
     if (!Settings.displayOwnWaypoints && removeFormatting(preMsg).includes(Player.getName())) return;
-    const name = "Scall Waypoint";
+    let name = `Scall Waypoint`;
+    slayersList.forEach(slayer => {
+        if (removeFormatting(preMsg).includes(slayer.raison)) {
+            name = `${Player.getName()}'s ${slayer.entityName}`; 
+        }
+    });
     x = parseInt(x);
     y = parseInt(y);
     z = parseInt(z);
@@ -112,7 +100,7 @@ register("chat", (preMsg, x,y,z,event) => {
 
 register("chat", (event) => {
     waypoints = [];
-}).setCriteria(/&r&9Party &8> (?:.*)&f: &r\[Scall] Slayer quest complete!&r|&r&bCo-op > (?:.*)&f: &r\[Scall] Slayer quest complete!&r/g);
+}).setCriteria(/&r&9Party &8> (?:.*)&f: &r\[SCALL] Slayer quest complete!&r/g);
 
 register("command", (x, y, z) => {
     removeWaypoint(parseInt(x), parseInt(y), parseInt(z));
@@ -136,7 +124,7 @@ register('step', () => {
         scoreBoard.forEach(line => {
             line = removeFormatting(line.toString());
             if (line.includes("Boss slain!") || line.includes(") Combat XP")){
-                ChatLib.command('cc [Scall] Slayer quest complete!');
+                ChatLib.command('pc [SCALL] Slayer quest complete!');
                 slayer.spawned = false;
             }
         });
@@ -230,7 +218,7 @@ register("chat", (slayerTrigger, level, event) => {
         if (stringToNumber(level) < 9) {
             ChatLib.chat("&a&l[&b&lSCALL&a&l]&r &2Looks like you've leveled up GG! Slayer HUD has been reset. &a&lGood luck on your next level!");
         } else if (stringToNumber(level) === 9) {
-            ChatLib.chat("&a&l[&b&lSCALL&a&l]&r &2Looks like you've reached the max level! Slayer HUD has been reset. &a&lGood luck on your next grind!"); // just for fun
+            ChatLib.chat("&a&l[&b&lSCALL&a&l]&r &2Looks like you've reached the max level GG! Slayer HUD has been reset. &a&lGood luck on your next grind!"); // just for fun
         }
     }
 }).setCriteria(/&r  &r&a&lLVL UP! &r&5➜ &r&e([A-Z][a-z]*) Slayer LVL ([1-9])!&r/g);
