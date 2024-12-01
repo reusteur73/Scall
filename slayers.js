@@ -76,26 +76,27 @@ function resetSlayerHud() {
 function removeWaypoint(x, y, z) {
     waypoints = waypoints.filter(waypoint => waypoint.x !== x || waypoint.y !== y || waypoint.z !== z);
 }
-register("chat", (preMsg, x,y,z,event) => {
+register("chat", (preMsg, raison, x,y,z,event) => {
     if (!Settings.displayOwnWaypoints && removeFormatting(preMsg).includes(Player.getName())) return;
-    let name = `Scall Waypoint`;
+    let name = `${raison}'s Waypoint`;
     slayersList.forEach(slayer => {
-        if (removeFormatting(preMsg).includes(slayer.raison)) {
+        if (removeFormatting(raison).includes(slayer.raison)) {
             name = `${Player.getName()}'s ${slayer.entityName}`; 
         }
     });
+    
     x = parseInt(x);
     y = parseInt(y);
     z = parseInt(z);
 
-    const message= new TextComponent(`&a&l[&b&lSCALL&a&l] &aFound coords! Waypoint set at &6&l${x} ${y} ${z}` + " &l&n&cCLICK TO REMOVE&r").setClick(
+    const message= new TextComponent(`&a&l[&b&lSCALL&a&l] &aFound coords! Waypoint set at &6&l${x} ${y} ${z}` + " &c&l&nCLICK TO REMOVE&r").setClick(
         "run_command", `/scrm ${x} ${y} ${z}`).setHoverValue("&c&lClick to remove this waypoint");
     
     let created = Date.now();
     waypoints.push({x, y, z, name, created});
 
     ChatLib.chat(message);
-}).setCriteria(/(.*)x: (-?[0-9]*) \| y: (-?[0-9]*) \| z: (-?[0-9]*)(?:.*)/g);
+}).setCriteria(/(.*) (\S*) x: (-?[0-9]*) \| y: (-?[0-9]*) \| z: (-?[0-9]*)(?:.*)/g);
 
 register("chat", (event) => {
     waypoints = [];
