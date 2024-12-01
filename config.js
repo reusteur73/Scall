@@ -5,7 +5,7 @@ import ScalableGui from "../BloomCore/utils/ScalableGui";
 
 @Vigilant("Scall", "Settings", {
     getCategoryComparator: () => (a, b) => {
-        const categories = ["General", "Powders Trackers", "Slayers"];
+        const categories = ["General", "Powders Trackers", "Slayers", "Money Trackers"];
         return categories.indexOf(a.name) - categories.indexOf(b.name);
     }
 })
@@ -294,6 +294,7 @@ class Settings {
     })
     moneyTracker = true;
 
+    // Gemstone Coin Tracker
     @SwitchProperty({
         name: "Enable Gemstone Coin Tracker",
         description: "Enable Gemstone Coin Tracker",
@@ -348,6 +349,27 @@ class Settings {
         this.initialize(this);
         this.setCategoryDescription("General", `&a&l[&b&lSCALL&a&l]&r &bv${JSON.parse(FileLib.read("Scall", "metadata.json")).version}` + 
         `\n&aBy &4&lReuS_V2`);
+        
+        this.addDependency("Enable Gemstone Coin Tracker", "Money Trackers");
+        this.addDependency("Move Gemstone Coin Tracker HUD", "Enable Gemstone Coin Tracker");
+        this.addDependency("Gemstone NPC Price", "Enable Gemstone Coin Tracker");
+        this.addDependency("Gemstone Selling Method", "Enable Gemstone Coin Tracker");
+
+        this.addDependency("&dReset Gemstone After", "&dGemstone Powder Tracker");
+        this.addDependency("&dMove Gemstone Powder Tracker HUD", "&dGemstone Powder Tracker");
+
+        this.addDependency("&bReset Glacite After", "&bGlacite Powder Tracker");
+        this.addDependency("&bMove Glacite Powder Tracker HUD", "&bGlacite Powder Tracker");
+
+        this.addDependency("&2Reset Mithril After", "&2Mithril Powder Tracker");
+        this.addDependency("&2Move Mithril Powder Tracker HUD", "&2Mithril Powder Tracker");
+
+        this.addDependency("Move Slayer HUD", "Slayer Progress HUD");
+
+        this.addDependency("High Pristine Proc Threshold", "High Pristine Proc");
+        this.addDependency("Alert Type", "High Pristine Proc");
+
+
     }
 }
 
