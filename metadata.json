@@ -1,8 +1,8 @@
 {
   "name": "Scall",
-  "description": "Scall mining module",
+  "description": "Scall Hypixel module",
   "author": "ReuS_V2",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "entry": "index.js",
   "requires": ["CTAutocomplete", "Vigilance","BeaconBeam", "PogData", "Elementa", "requestV2", "BloomCore"]
 }
