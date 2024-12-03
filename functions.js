@@ -226,11 +226,6 @@ export function getSackAddedValue(siblings) {
     return items;
 }
 
-export function getBazaarPrice(item) {
-    let bazaar = JSON.parse(FileLib.read("SkyblockAddons", "bazaar.json"));
-    return bazaar[item];
-}
-
 export function formatPercentage(percentage) {
     let color;
     if (percentage < 34) {

@@ -70,7 +70,6 @@ function resetGemstoneTracker(){
         wantedMined: 0,
         moneyMade: 0,
         moneyPerHour: 0,
-        text: "",
         gemTracking: null,
         visible: false,
         x: 0,

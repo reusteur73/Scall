@@ -79,10 +79,8 @@ function updateHUD(hud, powderName) {
     hud.gainsPerMinute = gainsPerMinute;
 
     let gainsPerHour = null;
-    if (elapsedTimeHours >= 1) {
-        gainsPerHour = (hud.totalGains / elapsedTimeHours).toFixed(0);
-        hud.gainsPerHour = gainsPerHour;
-    }
+    gainsPerHour = (hud.totalGains / elapsedTimeHours).toFixed(0);
+    hud.gainsPerHour = gainsPerHour;
 
     let color;
     switch (powderName) {

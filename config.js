@@ -345,6 +345,49 @@ class Settings {
     })
     gemstoneSellingMethod = 2;
 
+    // Mithril Coin Tracker
+    // @SwitchProperty({
+    //     name: "Enable Mithril Coin Tracker",
+    //     description: "Enable Mithril Coin Tracker",
+    //     category: "Money Trackers",
+    //     subcategory: "3 - Mithril"
+    // })
+    // mithrilTracker = true;
+
+    // @ButtonProperty({
+    //     name: "Move Mithril Coin Tracker HUD",
+    //     description: "Set the position of the Mithril Coin Tracker HUD",
+    //     category: "Money Trackers",
+    //     subcategory: "3 - Mithril",
+    //     placeholder: "Move"
+    // })
+    // moveMithrilCoinTrackerHUD() {
+    //     const MithrilGuiData = new PogObject("Scall", {
+    //         MithrilCoinTracker: {
+    //             x: 0,
+    //             y: 0,
+    //             scale: 1
+    //         }
+    //     })
+    //     const editGui = new ScalableGui(MithrilGuiData, MithrilGuiData.MithrilCoinTracker)
+    //     editGui.onRender(() => {
+    //         const myString = `Mithril Coin: 1,000,000\nTotal Gains: 100,000\nGains per Minute: 5,000`;
+    //         Renderer.translate(editGui.getX(), editGui.getY())
+    //         Renderer.scale(editGui.getScale())
+    //         Renderer.drawString(myString, 0, 0)
+    //     })
+    //     editGui.open()
+    // }
+
+    // @SelectorProperty({
+    //     name: "Mithril Selling Method",
+    //     description: "Choose the method of selling mithril",
+    //     category: "Money Trackers",
+    //     subcategory: "3 - Mithril",
+    //     options: ["Enchanted Mithril", "Refined Mithril"]
+    // })
+    // mithrilSellingMethod = 0;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription("General", `&a&l[&b&lSCALL&a&l]&r &bv${JSON.parse(FileLib.read("Scall", "metadata.json")).version}` + 
@@ -369,6 +412,9 @@ class Settings {
         this.addDependency("High Pristine Proc Threshold", "High Pristine Proc");
         this.addDependency("Alert Type", "High Pristine Proc");
 
+        // this.addDependency("Enable Mithril Coin Tracker", "Money Trackers");
+        // this.addDependency("Move Mithril Coin Tracker HUD", "Enable Mithril Coin Tracker");
+        // this.addDependency("Mithril Selling Method", "Enable Mithril Coin Tracker");
 
     }
 }
